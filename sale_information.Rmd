@@ -1,6 +1,5 @@
 ---
 title: "Steep and Cheap Deals"
-author: "Jeanette Clark"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -14,6 +13,12 @@ library(rvest)
 library(dplyr)
 library(DT)
 ```
+
+### Quick Links
+
++ [Go To Cams](https://www.steepandcheap.com/active-protection?pagesize=80)
++ [Go To Nuts](https://www.steepandcheap.com/passive-protection?pagesize=80)
++ [Go To Shoes](https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80)
 
 ```{r}
 # fill jagged dataframe
@@ -106,3 +111,6 @@ if((max(yesterdays_deals$Date) < today) == T){
 
 
 ```
+
+
+
