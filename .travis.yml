@@ -16,7 +16,6 @@ r_packages:
     - rvest
 script:
     - Rscript -e 'rmarkdown::render("sale_information.Rmd")'
-    - touch public/.nojekyll
 deploy:
   provider: pages
   skip_cleanup: true
