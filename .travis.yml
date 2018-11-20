@@ -15,7 +15,7 @@ r_packages:
     - dplyr
     - rvest
 script:
-    - Rscript -e 'rmarkdown::render(sale_information.Rmd)'
+    - Rscript -e 'rmarkdown::render("sale_information.Rmd")'
     - touch public/.nojekyll
 deploy:
   provider: pages
@@ -24,4 +24,4 @@ deploy:
   on:
     branch: master
   local_dir: public
-  target_branch: gh-pages
+  target_branch: master
