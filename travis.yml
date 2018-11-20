@@ -1,0 +1,27 @@
+language: r
+cache: packages
+git:
+  depth: false
+branches:
+  only:
+  - master
+addons:
+  apt:
+    packages:
+    - librdf0-dev
+r_packages:
+    - rmarkdown
+    - DT
+    - dplyr
+    - rvest
+script:
+    - Rscript -e 'rmarkdown::render(sale_information.Rmd)'
+    - touch public/.nojekyll
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: "$GITHUB_TOKEN"
+  on:
+    branch: master
+  local_dir: public
+  target_branch: master
