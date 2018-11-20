@@ -1,0 +1,108 @@
+---
+title: "Steep and Cheap Deals"
+author: "Jeanette Clark"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(DT)
+```
+
+```{r}
+# fill jagged dataframe
+cbind.fill<-function(...){
+    nm <- list(...) 
+    nm<-lapply(nm, as.matrix)
+    n <- max(sapply(nm, nrow)) 
+    do.call(cbind, lapply(nm, function (x) 
+    rbind(x, matrix(, n-nrow(x), ncol(x))))) 
+}
+
+#Read the steep and cheap content and return as a webpage
+steep_and_cheap <- function(url){
+  webpage <- read_html(url)
+  
+  page <- webpage %>%
+    html_nodes("span")
+  
+  
+  t_spans <- webpage %>%
+    html_nodes("span") %>% 
+    html_attrs()
+  
+  t_title <- page[which(t_spans == "ui-pl-name-title")] %>% 
+    html_text()
+  
+  t_price <- page[which(t_spans == "ui-pl-pricing-low-price price-sale js-item-price-low qa-item-price-low")] %>% 
+    html_text()
+  
+  t_pcnt <- page[which(t_spans == "ui-pl-percentage-off discount-sale qa-item-discount")] %>% 
+    html_text()
+  
+  t_brand <- page[which(t_spans == "ui-pl-name-brand qa-brand-name")] %>% 
+    html_text()
+  
+  pro <- list(t_brand, t_title, t_price, t_pcnt)
+  
+  
+  protection <- data.frame(cbind.fill(t_brand, t_title, t_price, t_pcnt))
+  names(protection) <- c("brand", "title", "price", "percent")
+  return(protection)
+}
+
+```
+
+```{r}
+today <- Sys.Date()
+```
+
+
+```{r}
+url_cams <- "https://www.steepandcheap.com/active-protection?pagesize=80"
+url_nuts <- "https://www.steepandcheap.com/passive-protection?pagesize=80"
+url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80"
+
+cams <- steep_and_cheap(url_cams) %>% 
+  filter(brand == "Black Diamond") %>% 
+  filter(!grepl("Ultralight", title)) %>% 
+  arrange(title)
+
+nuts <- steep_and_cheap(url_nuts) %>% 
+  filter(brand == "DMM") %>% 
+  filter(grepl("Wallnuts", title))
+
+shoes <- steep_and_cheap(url_shoes)
+
+all <- rbind(cams, nuts, shoes)
+
+all$Date <- today
+
+```
+
+# Today's Deals
+
+```{r}
+datatable(all, 
+          options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
+```
+
+```{r}
+yesterdays_deals <- read.csv("deals.csv") %>% 
+  mutate(Date = as.Date(Date))
+
+# if data file hasn't been updated, add today's data and write the file
+if((max(yesterdays_deals$Date) < today) == T){
+  new_data <- rbind(all, yesterdays_deals)
+  write.csv(new_data, "deals.csv", row.names = F)
+}
+
+
+
+```
