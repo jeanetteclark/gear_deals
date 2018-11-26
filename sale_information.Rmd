@@ -30,7 +30,7 @@ cbind.fill<-function(...){
     rbind(x, matrix(, n-nrow(x), ncol(x))))) 
 }
 
-#Read the steep and cheap content and return as a webpage
+#Read the steep and cheap content and return as a dataframe
 steep_and_cheap <- function(url){
   webpage <- read_html(url)
   
@@ -77,24 +77,35 @@ url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+
 cams <- steep_and_cheap(url_cams) %>% 
   filter(brand == "Black Diamond") %>% 
   filter(!grepl("Ultralight", title)) %>% 
-  arrange(title)
+  arrange(title) %>% 
+  mutate(Date = today)
 
 nuts <- steep_and_cheap(url_nuts) %>% 
   filter(brand == "DMM") %>% 
-  filter(grepl("Wallnuts", title))
+  filter(grepl("Wallnuts", title)) %>% 
+  mutate(Date = today)
 
-shoes <- steep_and_cheap(url_shoes)
+shoes <- steep_and_cheap(url_shoes) %>% 
+  mutate(Date = today)
 
 all <- rbind(cams, nuts, shoes)
 
-all$Date <- today
 
 ```
 
-# Today's Deals
+# Today's Deals {.tabset .tabset-fade}
+
+## Shoes
 
 ```{r}
-datatable(all, 
+datatable(shoes, 
+          options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
+```
+
+## Protection
+
+```{r}
+datatable(rbind(cams, nuts), 
           options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
 ```
 
