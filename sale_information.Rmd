@@ -16,9 +16,9 @@ library(DT)
 
 ### Quick Links
 
-+ [Go To Cams](https://www.steepandcheap.com/active-protection?pagesize=80)
 + [Go To Nuts](https://www.steepandcheap.com/passive-protection?pagesize=80)
 + [Go To Shoes](https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80)
++ [Go to Harnesses](https://www.steepandcheap.com/climbing-harnesses?pagesize=80)
 
 ```{r}
 # fill jagged dataframe
@@ -70,25 +70,24 @@ today <- Sys.Date()
 
 
 ```{r}
-url_cams <- "https://www.steepandcheap.com/active-protection?pagesize=80"
+url_harnesses <- "https://www.steepandcheap.com/climbing-harnesses?pagesize=80"
 url_nuts <- "https://www.steepandcheap.com/passive-protection?pagesize=80"
 url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80"
 
-cams <- steep_and_cheap(url_cams) %>% 
-  filter(brand == "Black Diamond") %>% 
-  filter(!grepl("Ultralight", title)) %>% 
-  arrange(title) %>% 
-  mutate(Date = today)
 
 nuts <- steep_and_cheap(url_nuts) %>% 
   filter(brand == "DMM") %>% 
-  filter(grepl("Wallnuts", title)) %>% 
+  #filter(grepl("Wallnuts", title)) %>% 
   mutate(Date = today)
 
 shoes <- steep_and_cheap(url_shoes) %>% 
   mutate(Date = today)
 
-all <- rbind(cams, nuts, shoes)
+harnesses <- steep_and_cheap(url_harnesses) %>% 
+  filter(!brand %in% c("Edelrid", "Metolius", "Edelweiss", "Petzl", "Salewa", "Beal")) %>% 
+  mutate(Date = today)
+
+all <- rbind(harnesses, nuts, shoes)
 
 
 ```
@@ -105,9 +104,17 @@ datatable(shoes,
 ## Protection
 
 ```{r}
-datatable(rbind(cams, nuts), 
+datatable(nuts, 
           options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
 ```
+
+## Harnesses
+
+```{r}
+datatable(harnesses, 
+          options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
+```
+
 
 ```{r}
 yesterdays_deals <- read.csv("deals.csv") %>% 
