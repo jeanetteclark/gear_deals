@@ -101,34 +101,7 @@ datatable(shoes,
           options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
 ```
 
-## Protection
 
-```{r}
-datatable(nuts, 
-          options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
-```
-
-## Harnesses
-
-```{r}
-datatable(harnesses, 
-          options = list(lengthMenu = c(20, 30, 40), pageLength = 20))
-```
-
-
-```{r}
-yesterdays_deals <- read.csv("deals.csv") %>% 
-  mutate(Date = as.Date(Date))
-
-# if data file hasn't been updated, add today's data and write the file
-if((max(yesterdays_deals$Date) < today) == T){
-  new_data <- rbind(all, yesterdays_deals)
-  write.csv(new_data, "deals.csv", row.names = F)
-}
-
-
-
-```
 
 
 
