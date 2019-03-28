@@ -70,24 +70,15 @@ today <- Sys.Date()
 
 
 ```{r}
-url_harnesses <- "https://www.steepandcheap.com/climbing-harnesses?pagesize=80"
-url_nuts <- "https://www.steepandcheap.com/passive-protection?pagesize=80"
 url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80"
 
 
-nuts <- steep_and_cheap(url_nuts) %>% 
-  filter(brand == "DMM") %>% 
-  #filter(grepl("Wallnuts", title)) %>% 
-  mutate(Date = today)
 
 shoes <- steep_and_cheap(url_shoes) %>% 
   mutate(Date = today)
 
-harnesses <- steep_and_cheap(url_harnesses) %>% 
-  filter(!brand %in% c("Edelrid", "Metolius", "Edelweiss", "Petzl", "Salewa", "Beal")) %>% 
-  mutate(Date = today)
 
-all <- rbind(harnesses, nuts, shoes)
+all <- rbind(shoes)
 
 
 ```
