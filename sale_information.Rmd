@@ -70,7 +70,7 @@ today <- Sys.Date()
 
 
 ```{r}
-url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?p=brand%3ALa%5C+Sportiva%7Cbrand%3AButora&nf=1&pagesize=80"
+url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?sort=-discountpercent&p=brand%3AScarpa%7Cbrand%3AButora%7Cbrand%3AFive%5C+Ten%7Cbrand%3ALa%5C+Sportiva&nf=1"
 
 
 
