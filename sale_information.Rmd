@@ -38,12 +38,9 @@ steep_and_cheap <- function(url){
     html_nodes("span")
   
   
-  t_spans <- webpage %>%
-    html_nodes("span") %>% 
-    html_attrs()
-  
-  t_title <- page[which(t_spans == "ui-pl-name-title")] %>% 
-    html_text()
+ page_attrs <- page %>% 
+   html_attrs()
+
   
   t_price <- page[which(t_spans == "ui-pl-pricing-low-price price-sale js-item-price-low qa-item-price-low")] %>% 
     html_text()
@@ -51,14 +48,14 @@ steep_and_cheap <- function(url){
   t_pcnt <- page[which(t_spans == "ui-pl-percentage-off discount-sale qa-item-discount")] %>% 
     html_text()
   
-  t_brand <- page[which(t_spans == "ui-pl-name-brand qa-brand-name")] %>% 
+  t_name <- page[which(page_attrs == "ui-pl-name-wrap" )] %>% 
     html_text()
   
-  pro <- list(t_brand, t_title, t_price, t_pcnt)
+  pro <- list(t_name, t_price, t_pcnt)
   
   
-  protection <- data.frame(cbind.fill(t_brand, t_title, t_price, t_pcnt))
-  names(protection) <- c("brand", "title", "price", "percent")
+  protection <- data.frame(cbind.fill(t_name, t_price, t_pcnt))
+  names(protection) <- c("name", "price", "percent")
   return(protection)
 }
 
@@ -70,16 +67,12 @@ today <- Sys.Date()
 
 
 ```{r}
-url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?sort=-discountpercent&p=brand%3AScarpa%7Cbrand%3AButora%7Cbrand%3AFive%5C+Ten%7Cbrand%3ALa%5C+Sportiva&nf=1"
+url_shoes <- "https://www.steepandcheap.com/rock-climbing-shoes?sort=-discountpercent&p=brand%3AScarpa%7CBrand%3A100000327&nf=1"
 
 
 
 shoes <- steep_and_cheap(url_shoes) %>% 
   mutate(Date = today)
-
-
-all <- rbind(shoes)
-
 
 ```
 
