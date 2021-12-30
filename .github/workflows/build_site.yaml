@@ -30,12 +30,12 @@ jobs:
         shell: Rscript {0}
 
       - name: Build page
-        run: Rscript -e "rmarkdown::render('sale_information.rmd')"
+        run: Rscript -e "rmarkdown::render('sale_information.rmd', output_dir = 'docs)"
 
       - uses: actions/upload-artifact@v1
         with:
           name: doc
-          path: /
+          path: docs/
 
 # Need to first create an empty gh-pages branch
 # see https://pkgdown.r-lib.org/reference/deploy_site_github.html
@@ -53,7 +53,7 @@ jobs:
          # Artifact name
          name: docs # optional
          # Destination path
-         path: / # optional
+         path: docs/ # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@v3
        env:
