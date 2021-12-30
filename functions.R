@@ -22,7 +22,7 @@ steep_and_cheap <- function(url){
   t_price <- page[which(page_attrs == "ui-pl-pricing-low-price price-sale js-item-price-low qa-item-price-low")] %>% 
     html_text()
   
-  t_pcnt <- page[which(page_attrs == "ui-pl-percentage-off discount-sale qa-item-discount")] %>% 
+  t_pcnt <- page[which(page_attrs == "ui-pl-percentage-off discount-sale js-pl-discount qa-item-discount")] %>% 
     html_text()
   
   t_name <- page[which(page_attrs == "ui-pl-name-wrap" )] %>% 
