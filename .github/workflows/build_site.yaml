@@ -30,7 +30,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Build page
-        run: Rscript -e "rmarkdown::render('sale_information.rmd', output_dir = 'docs)"
+        run: Rscript -e "rmarkdown::render('sale_information.rmd', output_dir = 'docs')"
 
       - uses: actions/upload-artifact@v1
         with:
