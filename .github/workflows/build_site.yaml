@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("rmarkdown","rvest", "dplyr,", "DT")
+          install.packages(c("rmarkdown","rvest", "dplyr", "DT")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
